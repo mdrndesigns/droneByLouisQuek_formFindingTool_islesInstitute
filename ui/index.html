@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DronePendantSpeakerTool</title>
+<link rel="stylesheet" href="controlgui.css">
+<style>
+  html, body { margin: 0; height: 100%; }
+  /* technical overlay: kept quiet so the model reads first. --ov scales the whole layer (View > Overlay strength) */
+  :root { --ov: 0.7; --ov-ink: #3c3f4a; --ov-line: rgba(40, 44, 60, .38); --ov-blue: #4a5be0; --ov-dim: rgba(74, 91, 224, .55); }
+  .dp-annot { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; opacity: var(--ov); transition: opacity .2s; }
+  .dp-annot .ln path { stroke: var(--ov-line); stroke-width: .75; fill: none; }
+  .dp-annot .ln circle { fill: #fff; stroke: var(--ov-line); stroke-width: .75; }
+  .dp-annot .dm path { stroke: var(--ov-dim); stroke-width: .75; fill: none; }
+  .dp-annot .ax path { stroke: var(--ov-line); stroke-width: .75; stroke-dasharray: 8 4 1.5 4; fill: none; }
+  .dp-annot text { font: 600 9.5px/1 Helvetica, Arial, sans-serif; letter-spacing: .07em; text-transform: uppercase; fill: var(--ov-ink);
+                   stroke: rgba(255, 255, 255, .8); stroke-width: 3px; paint-order: stroke; stroke-linejoin: round; }
+  .dp-annot text.dim, .dp-annot .code, .dp-annot .sz { fill: var(--ov-blue); font-variant-numeric: tabular-nums; }
+  .dp-annot .sz { font-weight: 400; }
+  .dp-annot text.dim { font-size: 10px; letter-spacing: 0; font-weight: 500; }
+  .dp-annot text.sub { font-weight: 400; font-size: 9px; fill: #6a6d78; }
+  .dp-annot text.bad { fill: #c0392b; }
+  /* readout card + warnings: translucent glass instead of a solid boxed panel */
+  .cg-readout.card { background: rgba(255, 255, 255, .55); border: 1px solid rgba(0, 0, 0, .1); border-radius: 3px;
+                     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #4a4d58;
+                     opacity: calc(.45 + var(--ov) * .55); transition: opacity .2s; }
+  .cg-readout.card dd.hot { color: var(--ov-blue); font-weight: 600; }
+  .cg-warn { color: #4a4d58; }
+</style>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+</head>
+<body>
+<script src="controlgui.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

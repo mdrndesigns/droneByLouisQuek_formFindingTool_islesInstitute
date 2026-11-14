@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# exports written by the tool / build.py
+*.zip
+*.stl
+*.3mf
+
+# editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# local agent state
+.claude/

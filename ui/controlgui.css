@@ -1,0 +1,225 @@
+/* ==========================================================================
+   controlGUI — stylesheet
+   Black / white + one accent (pure blue). No radii, no shadows, no gradients.
+   Hairline (0.5 px) for subdivisions, rule (1 px) for structure.
+   Every size below is deliberate; change the tokens, not the rules.
+   ========================================================================== */
+
+:root {
+  --cg-blue:   #0000FF;
+  --cg-black:  #000000;
+  --cg-white:  #FFFFFF;
+  --cg-grey:   #EEEEEE;            /* hover wash only — never for text or lines */
+  --cg-hair:   0.5px solid var(--cg-black);
+  --cg-rule:   1px solid var(--cg-black);
+  --cg-font:   "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --cg-panel-w: 340px;
+  --cg-pad-x:  16px;
+}
+
+/* ---------- reset + shell ---------- */
+.cg-shell, .cg-shell * { box-sizing: border-box; margin: 0; padding: 0; }
+.cg-shell {
+  font-family: var(--cg-font);
+  font-size: 11px; line-height: 1.35;
+  color: var(--cg-black); background: var(--cg-white);
+  -webkit-font-smoothing: antialiased;
+  display: grid; grid-template-columns: var(--cg-panel-w) 1fr;
+  height: 100vh; width: 100vw; overflow: hidden;
+}
+.cg-shell.cg-hidden-panel { grid-template-columns: 0 1fr; }
+.cg-shell.cg-hidden-panel .cg-panel { display: none; }
+
+/* ---------- control column ---------- */
+.cg-panel {
+  border-right: var(--cg-rule); overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column; background: var(--cg-white);
+}
+.cg-brand {
+  padding: 14px var(--cg-pad-x) 12px; border-bottom: var(--cg-rule);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+}
+.cg-brand h1 { font-size: 15px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.cg-brand span { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; text-align: right; }
+
+/* tabs: a segmented strip directly under the brand */
+.cg-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border-bottom: var(--cg-rule); }
+.cg-tabs button {
+  border: none; border-right: var(--cg-hair); border-radius: 0; background: var(--cg-white); color: var(--cg-black);
+  padding: 7px 2px; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; cursor: pointer;
+}
+.cg-tabs button:last-child { border-right: none; }
+.cg-tabs button.on { background: var(--cg-black); color: var(--cg-white); }
+.cg-tabs button:hover:not(.on) { background: var(--cg-grey); }
+
+/* groups */
+.cg-group { border-bottom: var(--cg-rule); padding: 12px var(--cg-pad-x) 14px; }
+.cg-group > h2 {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.cg-group.collapsible > h2 { cursor: pointer; user-select: none; }
+.cg-group > h2 i { font-style: normal; font-weight: 400; letter-spacing: 0; }
+.cg-group.closed > h2 { margin-bottom: 0; }
+.cg-group.closed > .cg-body { display: none; }
+.cg-group.hidden { display: none; }
+
+/* a controller */
+.cg-ctl { margin-bottom: 11px; }
+.cg-ctl:last-child { margin-bottom: 0; }
+.cg-ctl.hidden { display: none; }
+.cg-ctl.locked { opacity: 0.35; pointer-events: none; }
+.cg-ctl .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; gap: 8px; }
+.cg-ctl label, .cg-ctl .cap { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.cg-ctl .seglabel { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 4px; }
+
+/* value box: an editable number, right-aligned, blue, tabular */
+.cg-ctl input.num {
+  width: 58px; border: none; border-bottom: var(--cg-hair); text-align: right; font-family: inherit;
+  font-size: 10px; font-weight: 700; color: var(--cg-blue); background: transparent;
+  font-variant-numeric: tabular-nums; border-radius: 0;
+}
+.cg-ctl input.num:focus { outline: none; border-bottom-color: var(--cg-blue); }
+.cg-ctl output { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--cg-blue); }
+
+/* slider: 1 px track, 9 px square thumb */
+.cg-ctl input[type=range] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 11px; background: transparent;
+  display: block; cursor: pointer; margin: 0;
+}
+.cg-ctl input[type=range]::-webkit-slider-runnable-track { height: 1px; background: var(--cg-black); }
+.cg-ctl input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 9px; height: 9px; margin-top: -4px;
+  background: var(--cg-blue); border: none; border-radius: 0;
+}
+.cg-ctl input[type=range]::-moz-range-track { height: 1px; background: var(--cg-black); }
+.cg-ctl input[type=range]::-moz-range-thumb { width: 9px; height: 9px; background: var(--cg-blue); border: none; border-radius: 0; }
+.cg-ctl input[type=range]:focus { outline: none; }
+.cg-ctl input[type=range]:focus-visible::-webkit-slider-thumb { outline: 1px solid var(--cg-black); outline-offset: 1px; }
+
+/* segmented control (radio): one bordered strip, active cell inverted to blue */
+.cg-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: var(--cg-rule); }
+.cg-seg.wrap { grid-auto-flow: row; grid-template-columns: repeat(var(--cols, 3), 1fr); }
+.cg-seg button {
+  border: none; border-right: var(--cg-hair); border-radius: 0; background: var(--cg-white); color: var(--cg-black);
+  padding: 6px 2px; font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cg-seg.wrap button { border-bottom: var(--cg-hair); }
+.cg-seg button:last-child { border-right: none; }
+.cg-seg:not(.wrap) button:last-child, .cg-seg.wrap button:nth-child(var(--cols)n) { border-right: none; }
+.cg-seg button.on { background: var(--cg-blue); color: var(--cg-white); }
+.cg-seg button:hover:not(.on) { background: var(--cg-grey); }
+
+/* toggle: an 11 px square that fills blue */
+.cg-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.cg-toggle .box { width: 11px; height: 11px; border: 1px solid var(--cg-black); flex: 0 0 auto; }
+.cg-toggle input { display: none; }
+.cg-toggle input:checked + .box { background: var(--cg-blue); border-color: var(--cg-blue); }
+.cg-toggle span { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* select: a bordered box, no native chrome */
+.cg-ctl select.pick {
+  width: 100%; border: var(--cg-rule); border-radius: 0; background: var(--cg-white); font-family: inherit;
+  font-size: 10px; letter-spacing: 0.04em; padding: 6px 6px; appearance: none; -webkit-appearance: none; cursor: pointer;
+}
+.cg-ctl select.pick:focus { outline: none; color: var(--cg-blue); border-color: var(--cg-blue); }
+
+/* text */
+.cg-ctl textarea.txt, .cg-ctl input.txt {
+  width: 100%; border: var(--cg-rule); border-radius: 0; background: transparent; font-family: inherit; font-size: 11px;
+  letter-spacing: 0.04em; padding: 5px 6px; resize: vertical; display: block;
+}
+.cg-ctl textarea.txt:focus, .cg-ctl input.txt:focus { outline: none; border-color: var(--cg-blue); color: var(--cg-blue); }
+/* file: the native input is hidden behind a bordered label that behaves like a button */
+.cg-ctl label.act.file {
+  display: block; width: 100%; padding: 8px; margin-bottom: 6px; border: var(--cg-rule); background: var(--cg-white); color: var(--cg-black);
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; cursor: pointer;
+}
+.cg-ctl label.act.file:hover { background: var(--cg-blue); color: var(--cg-white); border-color: var(--cg-blue); }
+.cg-ctl label.act.file input[type=file] { display: none; }
+
+/* note: small running text; <b> is the only emphasis, and it is blue */
+.cg-note { font-size: 9px; letter-spacing: 0.04em; line-height: 1.5; }
+.cg-note b { color: var(--cg-blue); font-weight: 700; }
+
+/* in-panel button (bang): bordered, inverts to blue on hover */
+.cg-ctl button.act, .cg-foot button.act {
+  width: 100%; padding: 8px; border: var(--cg-rule); border-radius: 0; background: var(--cg-white); color: var(--cg-black);
+  font-family: inherit; font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; display: block;
+}
+.cg-ctl button.act:hover, .cg-foot button.act:hover { background: var(--cg-blue); color: var(--cg-white); border-color: var(--cg-blue); }
+button.act.primary { background: var(--cg-blue); color: var(--cg-white); border-color: var(--cg-blue); }
+button.act.primary:hover { background: var(--cg-black); border-color: var(--cg-black); }
+
+/* foot: pinned to the bottom of the column (export, name) */
+.cg-foot { padding: 12px var(--cg-pad-x) 16px; margin-top: auto; border-top: var(--cg-rule); }
+.cg-foot input.name {
+  width: 100%; border: none; border-bottom: var(--cg-rule); padding: 4px 0 5px; font-family: inherit; font-size: 11px;
+  letter-spacing: 0.06em; background: transparent; margin-bottom: 10px; border-radius: 0;
+}
+.cg-foot input.name:focus { outline: none; border-bottom-color: var(--cg-blue); color: var(--cg-blue); }
+.cg-foot .hint { margin-top: 7px; font-size: 9px; letter-spacing: 0.04em; line-height: 1.5; }
+
+/* ---------- stage (viewport) ---------- */
+.cg-stage { position: relative; overflow: hidden; background: var(--cg-white); }
+.cg-stage > canvas { display: block; width: 100%; height: 100%; }
+
+.cg-hud { position: absolute; left: 18px; top: 14px; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; pointer-events: none; }
+.cg-hud b { color: var(--cg-blue); }
+
+/* readout, card mode: a bordered key/value block top-right */
+.cg-readout.card {
+  position: absolute; right: 18px; top: 14px; width: 320px; font-size: 9px; letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.92); border: var(--cg-rule); padding: 8px 10px;
+}
+.cg-readout.card dl { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; }
+.cg-readout.card dt { text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap; }
+.cg-readout.card dd { font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
+.cg-readout dd.hot { color: var(--cg-blue); font-weight: 700; }
+.cg-readout dd.warn { color: var(--cg-black); text-decoration: underline; }
+.cg-readout.card:empty, .cg-readout.card dl:empty { display: none; }
+
+/* readout, strip mode: a full-width row of cells along the top of the stage */
+.cg-readout.strip {
+  position: absolute; top: 0; left: 0; right: 0; border-bottom: var(--cg-rule); background: var(--cg-white);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+}
+.cg-readout.strip div { padding: 9px 12px; border-right: var(--cg-hair); min-width: 0; }
+.cg-readout.strip div:last-child { border-right: none; }
+.cg-readout.strip dt { font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cg-readout.strip dd { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--cg-blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cg-readout.strip dd.hot { color: var(--cg-blue); }
+.cg-readout.strip dd.warn { color: var(--cg-black); text-decoration: underline; }
+
+/* warnings: bottom-left list, each line led by a blue dash */
+.cg-warn { position: absolute; left: 18px; bottom: 16px; max-width: 60%; font-size: 10px; letter-spacing: 0.04em; line-height: 1.5; }
+.cg-warn .w::before { content: "— "; color: var(--cg-blue); }
+
+/* error: bottom, blue, bold — the only loud element */
+.cg-err { position: absolute; left: 18px; right: 18px; bottom: 16px; font-size: 11px; letter-spacing: 0.04em; color: var(--cg-blue); font-weight: 700; }
+.cg-stage.has-status .cg-warn { bottom: 44px; }
+.cg-stage.has-status .cg-err { display: none; }   /* the status bar carries the error */
+
+/* status bar (strip mode companion): bottom edge, message left, error right */
+.cg-status {
+  position: absolute; left: 0; bottom: 0; right: 0; border-top: var(--cg-rule); background: var(--cg-white);
+  padding: 7px 12px; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; justify-content: space-between; gap: 12px;
+}
+.cg-status .msg { flex: 1 1 auto; }
+.cg-status .err { color: var(--cg-blue); font-weight: 700; text-align: right; flex: 0 1 55%; }
+
+/* stale: a 2 px blue line across the top of the stage while the model is rebuilding */
+.cg-stale { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--cg-blue); transform: scaleX(0); transform-origin: left; transition: transform .25s; z-index: 2; }
+.cg-stale.on { transform: scaleX(1); }
+.cg-busy { animation: cg-blink 0.7s steps(2, start) infinite; }
+@keyframes cg-blink { to { opacity: 0.25; } }
+
+/* ---------- narrow screens: stack ---------- */
+@media (max-width: 720px) {
+  .cg-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: 100dvh; }
+  .cg-panel { border-right: none; border-bottom: var(--cg-rule); max-height: 48dvh; }
+  .cg-readout.card { width: auto; left: 18px; right: 18px; }
+}
